@@ -6,14 +6,11 @@ from sklearn.metrics.pairwise import linear_kernel
 tfidf= joblib.load("tfidf.pkl")
 movies_df= joblib.load("movies_df.pkl")
 
-# Recreate the TF-IDF matrix and cosine similarity when the app loads
 @st.cache_resource
 def load_similarity_matrix():
-    # Transform the soup text to TF-IDF vectors
-    tfidf_matrix= tfidf.transform(movies_df['soup'])
-    # Compute cosine similarity
-    cosine_sim= linear_kernel(tfidf_matrix, tfidf_matrix)
-    return cosine_sim
+  tfidf_matrix= tfidf.transform(movies_df['soup'])
+  cosine_sim= linear_kernel(tfidf_matrix, tfidf_matrix)
+  return cosine_sim
 
 cosine_sim= load_similarity_matrix()
 
