@@ -19,9 +19,7 @@ def download_file_from_gdrive(file_id, output_path):
 
 # File IDs dari Google Drive
 file_ids = {
-    "cosine_sim.pkl": "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv",
-    "tfidf.pkl": "1RC0hiWRoFPqqxSC2O9bdApMuzexGMWZy",
-    "movies_df.pkl": "1D76gqTn3gRN4qx2C6A9a9pvqIJHq1VLC"
+    "cosine_sim.pkl": "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv"
 }
 
 # Download semua file
