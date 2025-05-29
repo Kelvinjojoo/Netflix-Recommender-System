@@ -5,22 +5,39 @@ import gdown
 import os
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Fungsi download yang lebih robust
 def download_file_from_gdrive(file_id, output_path):
-  if not os.path.exists(output_path):
-    url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    gdown.download(url, output_path, quiet=False, fuzzy=True)
+    if not os.path.exists(output_path):
+        try:
+            url = f"https://drive.google.com/uc?export=download&id={file_id}"
+            gdown.download(url, output_path, quiet=False)
+            st.success(f"File {output_path} downloaded successfully!")
+        except Exception as e:
+            st.error(f"Error downloading {output_path}: {str(e)}")
+            return False
+    return True
 
-cosine_sim_file_id= "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv"
-tfidf_file_id = "1RC0hiWRoFPqqxSC2O9bdApMuzexGMWZy"
-movies_df_file_id = "1D76gqTn3gRN4qx2C6A9a9pvqIJHq1VLC"
+# File IDs dari Google Drive
+file_ids = {
+    "cosine_sim.pkl": "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv",
+    "tfidf.pkl": "1RC0hiWRoFPqqxSC2O9bdApMuzexGMWZy",
+    "movies_df.pkl": "1D76gqTn3gRN4qx2C6A9a9pvqIJHq1VLC"
+}
 
-download_file_from_gdrive(cosine_sim_file_id, "cosine_sim.pkl")
-download_file_from_gdrive(tfidf_file_id, "tfidf.pkl")
-download_file_from_gdrive(movies_df_file_id, "movies_df.pkl")
+# Download semua file
+with st.spinner("Downloading necessary files..."):
+    for filename, file_id in file_ids.items():
+        if not download_file_from_gdrive(file_id, filename):
+            st.stop()  # Hentikan aplikasi jika download gagal
 
-tfidf= joblib.load("tfidf.pkl")
-cosine_sim= joblib.load("cosine_sim.pkl")
-movies_df= joblib.load("movies_df.pkl")
+# Muat file setelah download berhasil
+try:
+    tfidf = joblib.load("tfidf.pkl")
+    cosine_sim = joblib.load("cosine_sim.pkl")
+    movies_df = joblib.load("movies_df.pkl")
+except Exception as e:
+    st.error(f"Error loading files: {str(e)}")
+    st.stop()
 
 def get_recommendations(title, top_n= 5):
   try:
