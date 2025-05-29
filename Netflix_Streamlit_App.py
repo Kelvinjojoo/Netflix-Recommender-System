@@ -61,6 +61,7 @@ def main():
   movie_title= st.selectbox(
     "Search for a movie:",
     options= movies_df['title'].tolist(),
+    format_func= lambda x: x,
     index= None
   )
     
