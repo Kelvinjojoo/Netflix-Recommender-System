@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def download_file_from_gdrive(file_id, output_path):
   if not os.path.exists(output_path):
-    url= f"https://drive.google.com/uc?id={file_id}"
-    gdown.download(url, output_path, quiet=False)
+    url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    gdown.download(url, output_path, quiet=False, fuzzy=True)
 
 cosine_sim_file_id= "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv"
 tfidf_file_id = "1RC0hiWRoFPqqxSC2O9bdApMuzexGMWZy"
