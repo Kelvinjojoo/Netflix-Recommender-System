@@ -52,7 +52,7 @@ def main():
     margin-bottom: 20px;
   }
   .movie-details p{
-    color: #f63366;
+    color: #f5f5f5;
   }
   </style>
   """, unsafe_allow_html= True)
