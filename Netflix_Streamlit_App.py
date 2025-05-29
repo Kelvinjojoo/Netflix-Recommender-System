@@ -61,8 +61,7 @@ def main():
         "Search for a movie:",
         options=movies_df['title'].tolist(),
         format_func=lambda x: x,
-        index=None,
-        placeholder="Type to search...",
+        index=None
     )
     
     if st.button("Get Recommendations", key="recommend_button"):
