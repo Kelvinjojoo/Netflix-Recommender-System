@@ -4,8 +4,9 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
 tfidf= joblib.load("tfidf.pkl")
-cosine_sim= joblib.load("cosine_sim.pkl")
 movies_df= joblib.load("movies_df.pkl")
+tfidf_matrix= tfidf.transform(movies_df['soup'])
+cosine_sim= linear_kernel(tfidf_matrix, tfidf_matrix)
 
 def get_recommendations(title, top_n= 5):
   try:
