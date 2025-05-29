@@ -51,6 +51,9 @@ def main():
     border-radius: 8px;
     margin-bottom: 20px;
   }
+  .movie-details p{
+    color: #f63366;
+  }
   </style>
   """, unsafe_allow_html= True)
     
