@@ -57,52 +57,50 @@ def main():
     </style>
     """, unsafe_allow_html=True)
     
+    # Perbaikan utama di sini - ganti index=None dengan index=0
     movie_title = st.selectbox(
         "Search for a movie:",
         options=movies_df['title'].tolist(),
-        format_func=lambda x: x,
-        index=None
+        index=0  # Default ke film pertama dalam daftar
     )
     
-    if st.button("Get Recommendations", key="recommend_button"):
-        if not movie_title:
-            st.warning("Please select a movie first!")
+    if st.button("Get Recommendations"):
+        # Tidak perlu cek if not movie_title karena sekarang selalu ada nilai default
+        st.markdown("---")
+        
+        st.subheader(f"🔍 You searched for: {movie_title}")
+        movie_details = movies_df[movies_df['title'] == movie_title].iloc[0]
+        with st.expander("See movie details", expanded=True):
+            st.markdown(f"""
+            <div class="movie-details">
+                <p><b>Genre:</b> {movie_details['listed_in']}</p>
+                <p><b>Director:</b> {movie_details['director']}</p>
+                <p><b>Cast:</b> {movie_details['cast']}</p>
+                <p><b>Country:</b> {movie_details['country']}</p>
+                <p><b>Rating:</b> {movie_details['rating']}</p>
+                <p><b>Description:</b> {movie_details['description']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        recommendations = get_recommendations(movie_title, 5)
+        
+        if not recommendations.empty:
+            st.subheader("🎬 Top 5 Recommendations")
+            for _, row in recommendations.iterrows():
+                with st.container():
+                    st.markdown(f"""
+                    <div class="recommendation-box">
+                        <h4>{row['title']}</h4>
+                        <p><b>Genre:</b> {row['listed_in']}</p>
+                        <p><b>Director:</b> {row['director']}</p>
+                        <p><b>Cast:</b> {row['cast']}</p>
+                        <p><b>Country:</b> {row['country']}</p>
+                        <p><b>Rating:</b> {row['rating']}</p>
+                        <p><b>Description:</b> {row['description']}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
         else:
-            st.markdown("---")
-            
-            st.subheader(f"🔍 You searched for: {movie_title}")
-            movie_details = movies_df[movies_df['title'] == movie_title].iloc[0]
-            with st.expander("See movie details", expanded=True):
-                st.markdown(f"""
-                <div class="movie-details">
-                    <p><b>Genre:</b> {movie_details['listed_in']}</p>
-                    <p><b>Director:</b> {movie_details['director']}</p>
-                    <p><b>Cast:</b> {movie_details['cast']}</p>
-                    <p><b>Country:</b> {movie_details['country']}</p>
-                    <p><b>Rating:</b> {movie_details['rating']}</p>
-                    <p><b>Description:</b> {movie_details['description']}</p>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            recommendations = get_recommendations(movie_title, 5)
-            
-            if not recommendations.empty:
-                st.subheader("🎬 Top 5 Recommendations")
-                for _, row in recommendations.iterrows():
-                    with st.container():
-                        st.markdown(f"""
-                        <div class="recommendation-box">
-                            <h4>{row['title']}</h4>
-                            <p><b>Genre:</b> {row['listed_in']}</p>
-                            <p><b>Director:</b> {row['director']}</p>
-                            <p><b>Cast:</b> {row['cast']}</p>
-                            <p><b>Country:</b> {row['country']}</p>
-                            <p><b>Rating:</b> {row['rating']}</p>
-                            <p><b>Description:</b> {row['description']}</p>
-                        </div>
-                        """, unsafe_allow_html=True)
-            else:
-                st.error("No recommendations found. Try another movie!")
+            st.error("No recommendations found. Try another movie!")
 
 if __name__ == "__main__":
     main()
