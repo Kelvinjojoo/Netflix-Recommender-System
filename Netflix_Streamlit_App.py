@@ -11,8 +11,12 @@ def download_file_from_gdrive(file_id, output_path):
     gdown.download(url, output_path, quiet=False)
 
 cosine_sim_file_id= "1aqt1e2VHpgGOFN57nJWDjaPV1l1RPkZv"
+tfidf_file_id = "1RC0hiWRoFPqqxSC2O9bdApMuzexGMWZy"
+movies_df_file_id = "1D76gqTn3gRN4qx2C6A9a9pvqIJHq1VLC"
 
 download_file_from_gdrive(cosine_sim_file_id, "cosine_sim.pkl")
+download_file_from_gdrive(tfidf_file_id, "tfidf.pkl")
+download_file_from_gdrive(movies_df_file_id, "movies_df.pkl")
 
 tfidf= joblib.load("tfidf.pkl")
 cosine_sim= joblib.load("cosine_sim.pkl")
