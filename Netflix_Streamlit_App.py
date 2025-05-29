@@ -1,12 +1,23 @@
 import streamlit as st
 import joblib
 import pandas as pd
+from sklearn.metrics.pairwise import linear_kernel
 from sklearn.metrics.pairwise import cosine_similarity
 
-tfidf= joblib.load("tfidf.pkl")
-movies_df= joblib.load("movies_df.pkl")
-tfidf_matrix= tfidf.transform(movies_df['soup'])
-cosine_sim= linear_kernel(tfidf_matrix, tfidf_matrix)
+@st.cache_resource
+def load_models():
+  tfidf= joblib.load("tfidf.pkl")
+  movies_df= joblib.load("movies_df.pkl")
+  return tfidf, movies_df
+
+tfidf, movies_df= load_models()
+
+@st.cache_resource
+def calculate_similarity():
+  tfidf_matrix= tfidf.transform(movies_df['soup'])
+  return linear_kernel(tfidf_matrix, tfidf_matrix)
+
+cosine_sim= calculate_similarity()
 
 def get_recommendations(title, top_n= 5):
   try:
